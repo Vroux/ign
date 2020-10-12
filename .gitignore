@@ -1,0 +1,91 @@
+# app
+/app/bootstrap.php.cache
+/app/config/parameters.yml
+app/maintenance.php
+app/spool/
+app/Resources/assets/css/*
+app/Resources/assets/js/*
+app/Resources/assets/temp/*
+
+# bin
+/bin/*
+!/bin/console
+!/bin/console.php
+!/bin/websiteconsole
+!/bin/adminconsole
+!/bin/symfony_requirements
+
+# var
+/var/cache/*
+/var/indexes/*
+/var/logs/*
+/var/sessions/*
+/var/uploads/*
+/var/sitemaps/*
+!/var/cache/.gitkeep
+!/var/indexes/.gitkeep
+!/var/logs/.gitkeep
+!/var/sessions/.gitkeep
+!/var/uploads/.gitkeep
+!/var/sitemaps/.gitkeep
+
+# web
+/web/css
+/web/js
+/web/dist
+/web/bundles
+/web/uploads
+/var/bootstrap.php.cache
+/var/SymfonyRequirements.php
+/web/admin/translations/*
+!/web/admin/translations/.gitkeep
+/web/node_modules
+# /web/dist
+/web/src/scripts/bower_components/
+/web/package-lock.json
+/web/webpack-assets.json
+/web/webpack-twig-globals.js
+
+# composer
+/composer.phar
+/vendor
+
+# IDEs
+/.idea
+*.iml
+*~
+
+# System files
+.DS_Store
+/node_modules
+
+/.sass-cache
+/.sass-cache/*
+/app/data
+/build
+
+# deploy
+/deploy
+/deployer.phar
+deploy.php
+
+/docker2
+/docker2/*
+/docker/mysql
+docker-compose.yml
+
+busters.json
+package-lock.json
+.gulp-scss-cache
+
+
+/.phpcs-cache
+/reports/*
+!/reports/.gitkeep
+
+# env files
+.env
+
+#Beauty
+.phpcs-cache
+

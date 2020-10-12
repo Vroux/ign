@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Géoservices - Carte simple</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Map with Leaflet JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+    <script src="GpServices.js"></script>
+    <script src="geoportal-wfs-client.js"></script>
+</head>
+<body>
+<div id="map" style="width: 1024px; height: 768px;"></div>
+
+    <!-- Leaflet map JavaScript -->
+    <script>
+        // The id of map container ex <div id="map"></div>
+        var mapID = 'map';
+        // Get IGN tiles
+        var PlanIGN = L.tileLayer('https://wxs.ign.fr/{ignApiKey}/geoportail/wmts?'+
+            '&REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&TILEMATRIXSET=PM'+
+            '&LAYER={ignLayer}&STYLE={style}&FORMAT={format}'+
+            '&TILECOL={x}&TILEROW={y}&TILEMATRIX={z}',
+            {
+	            ignApiKey: 'choisirgeoportail',
+	            ignLayer: 'GEOGRAPHICALGRIDSYSTEMS.PLANIGN',
+	            style: 'normal',
+	            format: 'image/jpeg',
+	            service: 'WMTS',
+	            attribution: '&copy; <a href="http://www.ign.fr/">IGN</a>'
+        });
+        // Center of map and marker localisation
+        var myCenter = [48.8456,2.4245];
+        // My map
+        var myMap = L.map(mapID, {
+	        center: myCenter,
+	        zoom: 16,
+	        layers: [PlanIGN]
+        });
+        // My marker
+        var myMarker = L.marker(myCenter).addTo(myMap);
+        myMarker.bindPopup("<b>IGN</b><br />73 avenue de Paris<br />94160 SAINT-MANDÉ").openPopup();
+        ///*
+        Gp.Services.reverseGeocode({
+            apiKey : "22726iz9m8ficsgf2hmiicpd", // clef d'accès à la plateforme
+            position : {                         // position de recherche
+              x: 2.5,
+              y: 48.85
+            },
+            filterOptions : {
+                type : ["CadastralParcel"]    // type de localisant
+            },
+            onSuccess : function (result) {
+                // exploitation des resultats : "result" est de type Gp.Services.ReverseGeocodeResponse
+                console.log('Resultat reverseGeocode');
+                console.log(result);
+            }
+
+        });
+        /*
+        Gp.Services.getConfig({
+            apiKey : "22726iz9m8ficsgf2hmiicpd", // clef d'accès à la plateforme
+            onSuccess : function (result) {
+                // exploitation des resultats : "result" est de type Gp.Services.GetConfigResponse
+                console.log(result);
+            }
+        });
+        //*/
+
+        var options = {
+            "apiKey": "choisirgeoportail"
+        };
+        var client = new GeoportalWfsClient(options);
+
+        /*client.getTypeNames()
+          .then(function(typeNames){
+              console.log(typeNames);
+          })
+          .catch(function(err){
+              console.log(err);
+          })
+        ;*/
+
+
+        var params = {
+            bbox: [5.0,47.1,5.1,47.2],
+            code_dep: "21",
+            _limit: 10
+        };
+        client.getFeatures("BDPARCELLAIRE-VECTEUR_WLD_BDD_WGS84G:divcad",params)
+            .then(function(featureCollection){
+              console.log('Resultat BDPARCELLAIRE-VECTEUR_WLD');
+                console.log(featureCollection);
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+        ;
+
+        var states = [{
+          "type": "Feature",
+          "properties": {"party": "Republican"},
+          "geometry": {
+              "type": "Polygon",
+              "coordinates": [[
+                  [-104.05, 48.99],
+                  [-97.22,  48.98],
+                  [-96.58,  45.94],
+                  [-104.03, 45.94],
+                  [-104.05, 48.99]
+              ]]
+          }
+      }, {
+          "type": "Feature",
+          "properties": {"party": "Democrat"},
+          "geometry": {
+              "type": "Polygon",
+              "coordinates": [[
+                  [-109.05, 41.00],
+                  [-102.06, 40.99],
+                  [-102.03, 36.99],
+                  [-109.04, 36.99],
+                  [-109.05, 41.00]
+              ]]
+          }
+      }];
+
+      L.geoJSON(states, {
+          style: function(feature) {
+              switch (feature.properties.party) {
+                  case 'Republican': return {color: "#ff0000"};
+                  case 'Democrat':   return {color: "#0000ff"};
+              }
+          }
+      }).addTo(map);
+
+    </script>
+
+</body>
+</html>
