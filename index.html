@@ -55,7 +55,11 @@
             onSuccess : function (result) {
                 // exploitation des resultats : "result" est de type Gp.Services.ReverseGeocodeResponse
                 console.log('Resultat reverseGeocode');
-                console.log(result);
+                /*console.log(result);
+                for (const location of result.locations) {
+                  console.log(location);
+                  //L.geoJSON(location).addTo(map);
+                }*/
             }
 
         });
@@ -74,16 +78,6 @@
         };
         var client = new GeoportalWfsClient(options);
 
-        /*client.getTypeNames()
-          .then(function(typeNames){
-              console.log(typeNames);
-          })
-          .catch(function(err){
-              console.log(err);
-          })
-        ;*/
-
-
         var params = {
             bbox: [5.0,47.1,5.1,47.2],
             code_dep: "21",
@@ -93,12 +87,18 @@
             .then(function(featureCollection){
               console.log('Resultat BDPARCELLAIRE-VECTEUR_WLD');
                 console.log(featureCollection);
+                for (const feature of featureCollection.features) {
+                  console.log(feature);
+                  L.geoJSON(feature).addTo(map);
+                }
             })
             .catch(function(err){
                 console.log(err);
             })
         ;
 
+        //L.geoJSON(geojsonFeature).addTo(map);
+/*
         var states = [{
           "type": "Feature",
           "properties": {"party": "Republican"},
@@ -135,6 +135,7 @@
               }
           }
       }).addTo(map);
+*/
 
     </script>
 
